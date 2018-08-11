@@ -18,7 +18,6 @@ namespace ExpressShop.Storage
         public StorageDatabaseContext(string connectionString) 
             : base(connectionString)
         {
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<StorageDatabaseContext, Migrations.Configuration>());
             Configuration.LazyLoadingEnabled = false;
         }
 

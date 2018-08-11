@@ -64,6 +64,12 @@ namespace ExpressShop.Storage.Services
             return Map(Db.Reservations.ToList());
         }
 
+        public void DeleteAll()
+        {
+            Db.Reservations.RemoveRange(Db.Reservations.ToList());
+            Db.SaveChanges();
+        }
+
         public void CreateReservation(Reservation src)
         {
             if (src.IsNull())
@@ -99,7 +105,7 @@ namespace ExpressShop.Storage.Services
             Db.SaveChanges();
         }
 
-        public ReserveResultResp Reserve(ReserveReq req)
+        public void Reserve(ReserveReq req)
         {
             if (req.IsNull())
                 throw new ArgumentNullException(nameof(req));
@@ -107,11 +113,6 @@ namespace ExpressShop.Storage.Services
                 throw new ArgumentException(nameof(req.ProductId));
             if (req.Quantity <= 0)
                 throw new ArgumentException(nameof(req.Quantity));
-
-            var reserveResult = new ReserveResultResp
-            {
-                Status = ReserveStatus.Fail
-            };
 
             try
             {
@@ -130,14 +131,19 @@ namespace ExpressShop.Storage.Services
                             .SqlQuery(sqlQuery)
                             .FirstOrDefault();
 
-                        Console.WriteLine($"{Thread.CurrentThread.Name}: Получил продукт. Остаток: {product.TotalQuantity}");
+                        Logger.Write($"{Thread.CurrentThread.Name}: Получил продукт. Остаток: {product.TotalQuantity}");
 
                         if (product.TotalQuantity == 0)
                         {
                             scope.Complete();
 
-                            reserveResult.Message = $"Данного товара нет в наличии.";
-                            reserveResult.Status = ReserveStatus.EmptyStorage;
+                            Logger.Write($"{Thread.CurrentThread.Name}: Товар закончился");
+                        }
+                        else if (product.TotalQuantity - req.Quantity < 0)
+                        {
+                            scope.Complete();
+
+                            Logger.Write($"{Thread.CurrentThread.Name}: Количество товара, запрошенное для бронирования, больше чем есть на складе");
                         }
                         else
                         {
@@ -148,31 +154,26 @@ namespace ExpressShop.Storage.Services
                                 Id = Guid.NewGuid(),
                                 Characteristics = product.Characteristics,
                                 ProductId = product.Id,
-                                Quantity = req.Quantity
+                                Quantity = req.Quantity,
+                                OwnerId = Guid.NewGuid()
                             };
 
                             context.Reservations.Add(reservation);
 
                             context.SaveChanges();
 
-                            Console.WriteLine($"{Thread.CurrentThread.Name}: Создал бронь (кол-во товаров: {reservation.Quantity}).");
-                            Console.WriteLine($"{Thread.CurrentThread.Name}: Сохранил продукт. Остаток: {product.TotalQuantity}");
+                            Logger.Write($"{Thread.CurrentThread.Name}: Создал бронь (кол-во товаров: {reservation.Quantity})");
+                            Logger.Write($"{Thread.CurrentThread.Name}: Сохранил продукт. Остаток: {product.TotalQuantity}");
                         }
                     }
 
                     scope.Complete();
                 }
-
-                reserveResult.Message = $"Бронирование прошло успешно.";
-                reserveResult.Status = ReserveStatus.Success;
             }
             catch(Exception ex)
             {
-                reserveResult.Message = $"Произошла ошибка при бронировании товара: {ex.Message}";
-                reserveResult.Status = ReserveStatus.EmptyStorage;
+                Logger.Write($"{Thread.CurrentThread.Name}: Произошла ошибка при бронировании товара: {ex.Message}");
             }
-
-            return reserveResult;
         }
 
         #endregion

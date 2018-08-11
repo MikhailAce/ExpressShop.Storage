@@ -5,9 +5,7 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressShop.Storage", "ExpressShop.Storage.csproj", "{6B783080-3056-47A8-94E7-D937A94C8959}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "..\TestApp\TestApp.csproj", "{BC5998DE-56A8-47EB-9A28-29F317903E1C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressShop.Storage.Test", "..\ExpressShop.Storage.Test\ExpressShop.Storage.Test\ExpressShop.Storage.Test.csproj", "{0C460C9E-43C4-4DFA-BDF6-0C458C24F599}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressShop.Storage.Test", "..\TestApp\ExpressShop.Storage.Test.csproj", "{BC5998DE-56A8-47EB-9A28-29F317903E1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{BC5998DE-56A8-47EB-9A28-29F317903E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC5998DE-56A8-47EB-9A28-29F317903E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC5998DE-56A8-47EB-9A28-29F317903E1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0C460C9E-43C4-4DFA-BDF6-0C458C24F599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C460C9E-43C4-4DFA-BDF6-0C458C24F599}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C460C9E-43C4-4DFA-BDF6-0C458C24F599}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C460C9E-43C4-4DFA-BDF6-0C458C24F599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

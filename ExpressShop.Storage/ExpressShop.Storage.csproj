@@ -63,6 +63,7 @@
     <Compile Include="Entities\EntProduct.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="LocalConfiguration.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Migrations\201808101336585_Init.cs" />
     <Compile Include="Migrations\201808101336585_Init.Designer.cs">
       <DependentUpon>201808101336585_Init.cs</DependentUpon>
