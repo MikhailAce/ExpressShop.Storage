@@ -9,10 +9,12 @@ namespace ExpressShop.Storage
 {
     public static class Logger
     {
+        static object locker = new object();
+
         static Logger()
         {
             var rootPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\"));
-            LogFilePath = $"{rootPath}/ReserveTestResult.txt";
+            LogFilePath = $"{rootPath}/ReserveTestResult.log";
         }
 
         private static string LogFilePath { get; }
@@ -22,9 +24,12 @@ namespace ExpressShop.Storage
         /// </summary>
         public static void Write(string text)
         {
-            using (var sw = new StreamWriter(LogFilePath, true, Encoding.UTF8))
+            lock (locker)
             {
-                sw.WriteLine(text);
+                using (var sw = new StreamWriter(LogFilePath, true, Encoding.UTF8))
+                {
+                    sw.WriteLine(text);
+                }
             }
         }
 

@@ -131,19 +131,22 @@ namespace ExpressShop.Storage.Services
                             .SqlQuery(sqlQuery)
                             .FirstOrDefault();
 
-                        Logger.Write($"{Thread.CurrentThread.Name}: Получил продукт. Остаток: {product.TotalQuantity}");
+                        Logger.Write($"{Thread.CurrentThread.Name}. Получение товара из бд. Текущий остаток: {product.TotalQuantity}");
+                        Logger.Write($"{Thread.CurrentThread.Name}. Запрос товара. Количество: {req.Quantity}");
 
                         if (product.TotalQuantity == 0)
                         {
-                            scope.Complete();
+                            Logger.Write($"{Thread.CurrentThread.Name}. Товар закончился");
 
-                            Logger.Write($"{Thread.CurrentThread.Name}: Товар закончился");
+                            scope.Complete();
+                            return;
                         }
                         else if (product.TotalQuantity - req.Quantity < 0)
                         {
-                            scope.Complete();
+                            Logger.Write($"{Thread.CurrentThread.Name}. Количество товара, запрошенное для бронирования, больше чем есть на складе");
 
-                            Logger.Write($"{Thread.CurrentThread.Name}: Количество товара, запрошенное для бронирования, больше чем есть на складе");
+                            scope.Complete();
+                            return;
                         }
                         else
                         {
@@ -162,8 +165,8 @@ namespace ExpressShop.Storage.Services
 
                             context.SaveChanges();
 
-                            Logger.Write($"{Thread.CurrentThread.Name}: Создал бронь (кол-во товаров: {reservation.Quantity})");
-                            Logger.Write($"{Thread.CurrentThread.Name}: Сохранил продукт. Остаток: {product.TotalQuantity}");
+                            Logger.Write($"{Thread.CurrentThread.Name}. Создание бронирования");
+                            Logger.Write($"{Thread.CurrentThread.Name}. Сохранение товара. Остаток: {product.TotalQuantity}");
                         }
                     }
 
@@ -172,7 +175,7 @@ namespace ExpressShop.Storage.Services
             }
             catch(Exception ex)
             {
-                Logger.Write($"{Thread.CurrentThread.Name}: Произошла ошибка при бронировании товара: {ex.Message}");
+                Logger.Write($"{Thread.CurrentThread.Name}. Произошла ошибка при бронировании товара: {ex.Message}");
             }
         }
 

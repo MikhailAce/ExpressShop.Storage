@@ -203,10 +203,6 @@ Backup*/
 UpgradeLog*.XML
 UpgradeLog*.htm
 
-# SQL Server files
-*.mdf
-*.ldf
-
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -242,16 +238,8 @@ ModelManifest.xml
 # Paket dependency manager
 .paket/paket.exe
 
-# FAKE - F# Make
-.fake/
-
-# UD4
 Web.ConnectionString.config
 ConnectionStrings.config
-**/Umbraco/Config/Create/UI.xml
-App_Data/
 *.log
 *.log.*
-**/Properties/PublishProfiles/*.pubxml
-cities.json
 [Ll]ogs/

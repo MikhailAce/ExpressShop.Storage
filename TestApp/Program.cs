@@ -33,11 +33,11 @@ namespace TestApp
             /// <summary>
             /// Начальный остаток товара
             /// </summary>
-            private const int ProductTotalQuantity = 10000;
+            private const int ProductTotalQuantity = 1000;
             /// <summary>
             /// Число итераций для каждого потока
             /// </summary>
-            private const int IterationCount = 1000;
+            private const int IterationCount = 100;
 
             /// <summary>
             /// Выполнение необходимых операций перед запуском теста
@@ -61,6 +61,8 @@ namespace TestApp
             /// </summary>
             public void RunReserveTest()
             {
+                Console.WriteLine("Тест запущен.");
+
                 // Выполнение необходимых предварительных операций
                 BeforeTest();
 
@@ -75,7 +77,10 @@ namespace TestApp
                     thread.Start();
                 }
 
-                //Console.ReadLine();
+                Console.WriteLine("Тест завершен.\n");
+                Console.WriteLine("Результат находится в корневом каталоге решения. Файл: ReserveTestResult.log.");
+
+                Console.ReadLine();
             }
 
             #region Вспомогательные методы для теста
@@ -108,6 +113,8 @@ namespace TestApp
                         ProductId = ProductId,
                         Quantity = new Random().Next(1, 4)
                     });
+
+                    Logger.Write("\n");
                 }
             }
 
